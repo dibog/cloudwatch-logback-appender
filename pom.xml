@@ -4,7 +4,6 @@
 
     <groupId>net.bogdoll</groupId>
     <artifactId>cloudwatch-logback</artifactId>
-    <packaging>pom</packaging>
     <version>0.0.6-SNAPSHOT</version>
 
 	<name>cloudwatch-logback</name>
