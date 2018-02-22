@@ -7,6 +7,30 @@
     <packaging>pom</packaging>
     <version>0.0.3-SNAPSHOT</version>
 
+	<name>cloudwatch-logback</name>
+	<description>Logback Appender which uses stores the log entries in ASW Cloudwatch logs.</description>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
+
+	<url>https://github.com/dibog/cloudwatch-logback</url>
+	
+	<developers>
+		<developer>
+			<id>dibog</id>
+			<name>Dieter Bogdoll</name>
+			<email>dibog@github.com</email>
+			<url />
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
