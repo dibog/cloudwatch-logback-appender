@@ -5,7 +5,7 @@
     <groupId>net.bogdoll</groupId>
     <artifactId>cloudwatch-logback</artifactId>
     <packaging>pom</packaging>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.3</version>
 
 	<name>cloudwatch-logback</name>
 	<description>Logback Appender which uses stores the log entries in ASW Cloudwatch logs.</description>
@@ -157,7 +157,7 @@
         <connection>scm:git:git://github.com/dibog/cloudwatch-logback.git</connection>
         <developerConnection>scm:git:git@github.com:dibog/cloudwatch-logback.git</developerConnection>
         <url>https://github.com/dibog/cloudwatch-logback</url>
-        <tag>HEAD</tag>
+        <tag>cloudwatch-logback-0.0.3</tag>
     </scm>
 
 </project>
