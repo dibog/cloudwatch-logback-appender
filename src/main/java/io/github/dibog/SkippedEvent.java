@@ -10,9 +10,11 @@ import java.util.Map;
 
 class SkippedEvent implements ILoggingEvent {
     private final int no;
+    private final LoggerContextVO loggerContextVO;
 
-    public SkippedEvent(int aMessages) {
+    public SkippedEvent(int aMessages, LoggerContextVO aLoggerContextV0) {
         no = aMessages;
+        loggerContextVO = aLoggerContextV0;
     }
 
     @Override
@@ -47,7 +49,7 @@ class SkippedEvent implements ILoggingEvent {
 
     @Override
     public LoggerContextVO getLoggerContextVO() {
-        return null;
+        return loggerContextVO;
     }
 
     @Override

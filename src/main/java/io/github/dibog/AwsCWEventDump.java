@@ -1,6 +1,7 @@
 package io.github.dibog;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.classic.spi.LoggerContextVO;
 import ch.qos.logback.core.spi.ContextAware;
 import com.amazonaws.services.logs.AWSLogs;
 import com.amazonaws.services.logs.model.*;
@@ -72,13 +73,20 @@ class AwsCWEventDump implements Runnable {
 
         if(createLogGroup) {
             if (findLogGroup(groupName)==null) {
-                awsLogs.createLogGroup(new CreateLogGroupRequest(groupName));
+                logContext.addInfo("creating log group '"+groupName+"'");
+                try {
+                    awsLogs.createLogGroup(new CreateLogGroupRequest(groupName));
+                }
+                catch(OperationAbortedException e) {
+                    logContext.addError("couldn't create log group '"+groupName+"': "+e.getLocalizedMessage());
+                }
             }
         }
 
         LogStream stream = findLogStream(groupName, aNewStreamName);
         if(stream==null) {
             try {
+                logContext.addInfo("creating log stream '"+streamName+"'");
                 awsLogs.createLogStream(new CreateLogStreamRequest(groupName, aNewStreamName));
             }
             catch(Exception e) {
@@ -135,6 +143,7 @@ class AwsCWEventDump implements Runnable {
             String newStreamName = streamName + "-" + dateFormat.format(dateHolder);
 
             if ( !newStreamName.equals(currentStreamName) ) {
+                logContext.addInfo("stream name changed from '"+currentStreamName+"' to '"+newStreamName+"'");
                 closeStream();
                 openStream(newStreamName);
             }
@@ -146,7 +155,6 @@ class AwsCWEventDump implements Runnable {
 
         Collection<InputLogEvent> events =  new ArrayList<>(aEvents.size());
         for(ILoggingEvent event : aEvents) {
-
             if(event.getLoggerContextVO()!=null) {
                 String msg = layout.apply(event);
                 events.add(new InputLogEvent()
@@ -177,14 +185,19 @@ class AwsCWEventDump implements Runnable {
 
     public void run() {
         List<ILoggingEvent> collections = new LinkedList<ILoggingEvent>();
+        LoggerContextVO context = null;
         while(!done) {
 
             try {
                 int[] nbs = queue.drainTo(collections);
+                if(context==null && !collections.isEmpty()) {
+                    context = collections.get(0).getLoggerContextVO();
+                }
+
                 int msgProcessed = nbs[0];
                 int msgSkipped = nbs[1];
-                if(msgSkipped>0) {
-                    collections.add(new SkippedEvent(msgSkipped));
+                if(context!=null && msgSkipped>0) {
+                    collections.add(new SkippedEvent(msgSkipped, context));
                 }
                 log(collections);
                 collections.clear();
