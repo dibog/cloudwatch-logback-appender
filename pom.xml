@@ -4,7 +4,7 @@
 
     <groupId>io.github.dibog</groupId>
     <artifactId>cloudwatch-logback-appender</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
 
 	<name>cloudwatch-logback-appender</name>
 	<description>Logback Appender which uses stores the log entries in ASW Cloudwatch logs.</description>
@@ -160,7 +160,7 @@
         <connection>scm:git:git://github.com/dibog/cloudwatch-logback-appender.git</connection>
         <developerConnection>scm:git:git@github.com:dibog/cloudwatch-logback-appender.git</developerConnection>
         <url>https://github.com/dibog/cloudwatch-logback</url>
-        <tag>cloudwatch-logback-appender-0.0.1</tag>
+        <tag>cloudwatch-logback-appender-0.0.2</tag>
     </scm>
 	
 	<profiles>
