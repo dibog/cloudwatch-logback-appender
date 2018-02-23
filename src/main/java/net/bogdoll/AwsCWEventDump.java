@@ -150,9 +150,12 @@ class AwsCWEventDump implements Runnable {
         Collection<InputLogEvent> events =  new ArrayList<>(aEvents.size());
         for(ILoggingEvent event : aEvents) {
 
-            events.add( new InputLogEvent()
-                    .withTimestamp(event.getTimeStamp())
-                    .withMessage(layout.apply(event)) );
+            if(event.getLoggerContextVO()!=null) {
+                String msg = layout.apply(event);
+                events.add(new InputLogEvent()
+                        .withTimestamp(event.getTimeStamp())
+                        .withMessage(layout.apply(event)));
+            }
         }
 
         try {

@@ -58,16 +58,11 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
     @Override
     protected void append(ILoggingEvent event) {
 
-        if(layout!=null) {
-            String encode = layout.doLayout(event);
+        AwsCWEventDump queue = dump;
+        if (dump != null) {
+            dump.queue(event);
         }
-        else {
-            AwsCWEventDump queue = dump;
-            if (dump != null) {
-                dump.queue(event);
-            }
-        }
-        
+
     }
 
     @Override
