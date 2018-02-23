@@ -1,4 +1,4 @@
-package net.bogdoll;
+package io.github.dibog;
 
 import com.amazonaws.auth.AWSCredentials;
 

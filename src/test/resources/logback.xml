@@ -1,6 +1,6 @@
 <configuration debug="on">
 
-    <appender name="cwl1" class="net.bogdoll.AwsLogAppender">
+    <appender name="cwl1" class="io.github.dibog.AwsLogAppender">
 
         <awsConfig>
             <!--<credentials>-->
@@ -24,7 +24,7 @@
 
     </appender>
 
-    <appender name="cwl2" class="net.bogdoll.AwsLogAppender">
+    <appender name="cwl2" class="io.github.dibog.AwsLogAppender">
 
         <awsConfig>
             <!--<credentials>-->

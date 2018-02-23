@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.bogdoll</groupId>
-    <artifactId>cloudwatch-logback</artifactId>
-    <version>0.0.8-SNAPSHOT</version>
+    <groupId>io.github.dibog</groupId>
+    <artifactId>cloudwatch-logback-appender</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
-	<name>cloudwatch-logback</name>
+	<name>cloudwatch-logback-appender</name>
 	<description>Logback Appender which uses stores the log entries in ASW Cloudwatch logs.</description>
 	<licenses>
 		<license>
@@ -15,7 +15,7 @@
 		</license>
 	</licenses>
 
-	<url>https://github.com/dibog/cloudwatch-logback</url>
+	<url>https://github.com/dibog/cloudwatch-logback-appender</url>
 	
 	<developers>
 		<developer>
@@ -157,8 +157,8 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:git:git://github.com/dibog/cloudwatch-logback.git</connection>
-        <developerConnection>scm:git:git@github.com:dibog/cloudwatch-logback.git</developerConnection>
+        <connection>scm:git:git://github.com/dibog/cloudwatch-logback-appender.git</connection>
+        <developerConnection>scm:git:git@github.com:dibog/cloudwatch-logback-appender.git</developerConnection>
         <url>https://github.com/dibog/cloudwatch-logback</url>
         <tag>HEAD</tag>
     </scm>

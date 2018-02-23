@@ -1,13 +1,8 @@
-package net.bogdoll;
+package io.github.dibog;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.AppenderBase;
 import ch.qos.logback.core.Layout;
-import ch.qos.logback.core.encoder.Encoder;
-import ch.qos.logback.core.read.CyclicBufferAppender;
-import org.slf4j.helpers.FormattingTuple;
-import org.slf4j.helpers.MessageFormatter;
 
 public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
 

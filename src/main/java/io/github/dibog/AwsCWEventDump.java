@@ -1,12 +1,9 @@
-package net.bogdoll;
+package io.github.dibog;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.core.spi.ContextAware;
 import com.amazonaws.services.logs.AWSLogs;
 import com.amazonaws.services.logs.model.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Marker;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

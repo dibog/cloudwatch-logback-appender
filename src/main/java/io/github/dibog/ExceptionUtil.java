@@ -1,4 +1,4 @@
-package net.bogdoll;
+package io.github.dibog;
 
 import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.classic.spi.StackTraceElementProxy;
