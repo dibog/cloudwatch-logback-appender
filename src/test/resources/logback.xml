@@ -1,0 +1,58 @@
+<configuration debug="on">
+
+    <appender name="cwl1" class="net.bogdoll.AwsLogAppender">
+
+        <awsConfig>
+            <!--<credentials>-->
+                <!--<accessKeyId></accessKeyId>-->
+                <!--<secretAccessKey></secretAccessKey>-->
+            <!--</credentials>-->
+
+            <region>eu-central-1</region>
+
+            <!--<clientConfig class="com.amazonaws.ClientConfiguration">-->
+                <!--<proxyHost>foo</proxyHost>-->
+                <!--<proxyPort>123</proxyPort>-->
+            <!--</clientConfig>-->
+        </awsConfig>
+
+        <!--<createLogGroup>false</createLogGroup>-->
+        <queueLength>100</queueLength>
+        <groupName>foo</groupName>
+        <streamName>log-complex</streamName>
+        <dateFormat>yyyyMMdd_HHmm</dateFormat>
+
+    </appender>
+
+    <appender name="cwl2" class="net.bogdoll.AwsLogAppender">
+
+        <awsConfig>
+            <!--<credentials>-->
+            <!--<accessKeyId></accessKeyId>-->
+            <!--<secretAccessKey></secretAccessKey>-->
+            <!--</credentials>-->
+
+            <region>eu-central-1</region>
+
+            <!--<clientConfig class="com.amazonaws.ClientConfiguration">-->
+            <!--<proxyHost>foo</proxyHost>-->
+            <!--<proxyPort>123</proxyPort>-->
+            <!--</clientConfig>-->
+        </awsConfig>
+
+        <!--<createLogGroup>false</createLogGroup>-->
+        <queueLength>100</queueLength>
+        <groupName>foo</groupName>
+        <streamName>log-simple</streamName>
+        <dateFormat>yyyyMMdd_HHmm</dateFormat>
+
+        <layout>
+            <pattern>[%X{a} %X{b}] %-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+        </layout>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="cwl1"/>
+        <appender-ref ref="cwl2"/>
+    </root>
+</configuration>

@@ -23,11 +23,13 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Logger logger = LoggerFactory.getLogger(Main.class);
 
-        for(int i=0; i<200_000; ++i) {
+        for(int i=0; i<200; ++i) {
             logger.info("Message {}", i);
-            Thread.sleep(10_000L );
+//            Thread.sleep(10_000L );
         }
 
-        Thread.sleep(60_000L);
+        Thread.sleep(20_000L);
+
+        System.out.println("### Done");
     }
 }
