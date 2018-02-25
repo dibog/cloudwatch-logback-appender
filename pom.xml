@@ -168,7 +168,7 @@
 
         <repository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
 
@@ -176,7 +176,7 @@
         <connection>scm:git:git://github.com/dibog/cloudwatch-logback-appender.git</connection>
         <developerConnection>scm:git:git@github.com:dibog/cloudwatch-logback-appender.git</developerConnection>
         <url>https://github.com/dibog/cloudwatch-logback</url>
-        <tag>cloudwatch-logback-appender-0.0.1</tag>
+		<tag>HEAD</tag>
     </scm>
 	
 	<profiles>
