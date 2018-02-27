@@ -46,15 +46,15 @@ at least the following AWS permissions:
 * ``logs:DescribeLogStreams``
 * ``logs:PutLogEvents``
 
-The section ``<awsConfig>`` is optional and on an EC2 instance usually not required as long
+The section ``<awsConfig>`` is optional and on an EC2 instance. It usually is not required as long
 as you have attached an IAM profile to your instance with the right permissions and/or have
 set the environment variables required to provide the AWS credentials.
 
 But if that section is available in the configuration it will be used instead of the data
 from the environment.
 
-The sub section ``<credentials>`` is self explainoary, just determine your values for this 
-section and enter them.
+The sub section ``<credentials>`` is self explanatory if you know your AWS. Just determine your values for this 
+section and enter them here.
 
 The sub section ``<region>`` should contain the AWS region into which the log information
 should be streamed, please find here the [actual list of regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#available_regions).
