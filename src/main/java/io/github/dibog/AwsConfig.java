@@ -29,22 +29,22 @@ public class AwsConfig {
     public void setCredentials(AwsCredentials credentials) {
         this.credentials = credentials;
     }
-
     public void setClientConfig(ClientConfiguration clientConfig) {
         this.clientConfig = clientConfig;
     }
-
     public void setRegion(String region) {
         this.region = region;
     }
 
     public AWSLogs createAWSLogs() {
-        AWSLogsClientBuilder builder = AWSLogsClientBuilder
-                .standard()
-                .withRegion(region);
+        AWSLogsClientBuilder builder = AWSLogsClientBuilder.standard();
+
+        if(region!=null) {
+            builder.withRegion(region);
+        }
 
         if(clientConfig!=null) {
-                builder.withClientConfiguration(new ClientConfiguration());
+            builder.withClientConfiguration(new ClientConfiguration());
         }
 
         if(credentials!=null) {

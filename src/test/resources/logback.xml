@@ -8,7 +8,7 @@
                 <!--<secretAccessKey></secretAccessKey>-->
             <!--</credentials>-->
 
-            <region>eu-central-1</region>
+            <!--<region>eu-central-1</region>-->
 
             <!--<clientConfig class="com.amazonaws.ClientConfiguration">-->
                 <!--<proxyHost>foo</proxyHost>-->
@@ -16,7 +16,7 @@
             <!--</clientConfig>-->
         </awsConfig>
 
-        <!--<createLogGroup>false</createLogGroup>-->
+        <!--<createLogGroup>true</createLogGroup>-->
         <queueLength>100</queueLength>
         <groupName>foo</groupName>
         <streamName>log-complex</streamName>
@@ -32,7 +32,7 @@
             <!--<secretAccessKey></secretAccessKey>-->
             <!--</credentials>-->
 
-            <region>eu-central-1</region>
+            <!--<region>eu-central-1</region>-->
 
             <!--<clientConfig class="com.amazonaws.ClientConfiguration">-->
             <!--<proxyHost>foo</proxyHost>-->
@@ -40,7 +40,7 @@
             <!--</clientConfig>-->
         </awsConfig>
 
-        <!--<createLogGroup>false</createLogGroup>-->
+        <!--<createLogGroup>true</createLogGroup>-->
         <queueLength>100</queueLength>
         <groupName>foo</groupName>
         <streamName>log-simple</streamName>

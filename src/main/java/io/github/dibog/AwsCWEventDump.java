@@ -18,6 +18,7 @@ package io.github.dibog;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggerContextVO;
+import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.spi.ContextAware;
 import com.amazonaws.services.logs.AWSLogs;
 import com.amazonaws.services.logs.model.*;
@@ -25,14 +26,12 @@ import com.amazonaws.services.logs.model.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
 
 class AwsCWEventDump implements Runnable {
-
     private final RingBuffer<ILoggingEvent> queue = new RingBuffer<ILoggingEvent>(10);
-    private final Function<ILoggingEvent,String> layout;
+    private final LoggingEventToString layout;
     private final AwsConfig awsConfig;
     private final boolean createLogGroup;
     private final String groupName;
@@ -50,17 +49,23 @@ class AwsCWEventDump implements Runnable {
 
     public AwsCWEventDump( AwsLogAppender aAppender ) {
         logContext = requireNonNull(aAppender, "appender");
-        awsConfig = requireNonNull(aAppender.awsConfig, "appender.awsConfig");
+        awsConfig = aAppender.awsConfig==null ? new AwsConfig(): aAppender.awsConfig;
         createLogGroup = aAppender.createLogGroup;
         groupName = requireNonNull(aAppender.groupName, "appender.groupName");
         logEventReq = new PutLogEventsRequest().withLogGroupName(groupName);
         streamName = requireNonNull(aAppender.streamName, "appender.streamName");
 
         if(aAppender.layout==null) {
-            layout = new LoggingEventToString();
+            layout = new LoggingEventToStringImpl();
         }
         else {
-            layout = (ILoggingEvent event) -> aAppender.layout.doLayout(event);
+            final Layout<ILoggingEvent> delegate = aAppender.layout;
+            layout = new LoggingEventToString() {
+                @Override
+                public String map(ILoggingEvent event) {
+                    return delegate.doLayout(event);
+                }
+            };
         }
 
         if(aAppender.dateFormat==null || aAppender.dateFormat.trim().isEmpty()) {
@@ -172,10 +177,9 @@ class AwsCWEventDump implements Runnable {
         Collection<InputLogEvent> events =  new ArrayList<>(aEvents.size());
         for(ILoggingEvent event : aEvents) {
             if(event.getLoggerContextVO()!=null) {
-                String msg = layout.apply(event);
                 events.add(new InputLogEvent()
                         .withTimestamp(event.getTimeStamp())
-                        .withMessage(layout.apply(event)));
+                        .withMessage(layout.map(event)));
             }
         }
 

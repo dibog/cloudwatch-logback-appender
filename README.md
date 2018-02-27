@@ -34,6 +34,10 @@ With the following XML fragemnt you can configure your Cloudtwatch logback appen
         <groupName>group-name</groupName>
         <streamName>stream-name</streamName>
         <dateFormat>yyyyMMdd_HHmm</dateFormat>
+        
+         <layout>
+            <pattern>[%X{a} %X{b}] %-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+         </layout>
 
     </appender>
     
@@ -77,14 +81,14 @@ will be created it it does not yet exist.
 content of ``<streamName>`` is used as prefix otherwise it is taken as specified. The log stream will
 be created on the fly. 
 
-* ``<dataFormat>``: If a valid (SimpleDateFormat string)[https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html] is
+* ``<dataFormat>``: If a valid [SimpleDateFormat string](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html) is
 provided it will be used with the ``<streamName>`` to create a combined log stream. This feature
 can be used to create multiple log streams of the live time of the logging process. Everytime the
 SimpleDateFormat will yield a new stream name the current log stream will be closed and a new
 one created.
 
+* ``<layout>``: If exist it will be used to transform the logging event to a string which is stored in cloudwatch logs.
+( See https://logback.qos.ch/manual/layouts.html#PatternLayout. ) 
+If the tag is missing, the logging event will be transformed into a json object.
 
 
-
-
- 
