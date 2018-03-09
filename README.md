@@ -10,8 +10,16 @@ The copyright owner is Dieter Bogdoll.
 ## Overview
 This project provides a [logback appender](https://logback.qos.ch/) whichs target is [AWS Cloudwatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html).
 
+## Maven
+
+    <dependency>
+        <groupId>io.github.dibog</groupId>
+        <artifactId>cloudwatch-logback-appender</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+
 ## Configuration
-With the following XML fragemnt you can configure your Cloudtwatch logback appender:
+With the following XML fragment you can configure your Cloudtwatch logback appender:
 
     <appender name="cloud-watch" class="io.github.dibog.AwsLogAppender">
 
@@ -92,3 +100,30 @@ one created.
 If the tag is missing, the logging event will be transformed into a json object.
 
 
+## Caveats
+
+The [pom.xml](pom.xml) used for this project binds to a specific version of the AWS SDK.
+In case you are using in your project also the AWS SDK the changes are high that the
+version is different to that ot the cloudwatch-logback-appender, and this could lead to problems.
+If the version of your AWS SDK is smaller then the one of cloudwatch-logback-appender I advise 
+you to upgrade to the latest [AWS SDK version](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk).
+If your AWS SDK is version is later then the one used by cloudwatch-logback-appender you could
+replace the dependecy to cloudwatch-logback-appender like this:
+
+    <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-logs</artifactId>
+        <version>VERSION_OF_OUR_AWS_SDK</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>io.github.dibog</groupId>
+        <artifactId>cloudwatch-logback-appender</artifactId>
+        <version>VERSION_OF_CLOUDWATCH_LOGBACK_APPENDER</version>
+        <exclusions>
+            <exclusion>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-logs</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
