@@ -71,6 +71,7 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
 
         AwsCWEventDump queue = dump;
         if (dump != null) {
+            event.prepareForDeferredProcessing();
             dump.queue(event);
         }
 
