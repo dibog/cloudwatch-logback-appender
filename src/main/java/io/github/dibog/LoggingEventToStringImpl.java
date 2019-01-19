@@ -46,6 +46,11 @@ class LoggingEventToStringImpl implements LoggingEventToString {
             values.put("exception", ExceptionUtil.toString(exceptionProxy));
         }
 
+        // In theory, event.getMDCPropertyMap() should not be null, in practice it can
+        if (event.getMDCPropertyMap() != null && !event.getMDCPropertyMap().isEmpty()) {
+            values.put("context", event.getMDCPropertyMap());
+        }
+
         try {
             return m.writeValueAsString(values);
         }
