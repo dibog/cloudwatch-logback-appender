@@ -197,6 +197,7 @@ class AwsCWEventDump implements Runnable {
 
     public void shutdown() {
         done = true;
+        flush();
     }
 
     public void queue(ILoggingEvent event) {
@@ -204,28 +205,26 @@ class AwsCWEventDump implements Runnable {
     }
 
     public void run() {
-        List<ILoggingEvent> collections = new LinkedList<ILoggingEvent>();
-        LoggerContextVO context = null;
         while(!done) {
-
-            try {
-                int[] nbs = queue.drainTo(collections);
-                if(context==null && !collections.isEmpty()) {
-                    context = collections.get(0).getLoggerContextVO();
-                }
-
-                int msgProcessed = nbs[0];
-                int msgSkipped = nbs[1];
-                if(context!=null && msgSkipped>0) {
-                    collections.add(new SkippedEvent(msgSkipped, context));
-                }
-                log(collections);
-                collections.clear();
-            }
-            catch(InterruptedException e) {
-                // ignoring
-            }
+            flush();
         }
     }
-}
 
+    private void flush() {
+        List<ILoggingEvent> collections = new LinkedList<ILoggingEvent>();
+        LoggerContextVO context = null;
+
+        int[] nbs = queue.drainTo(collections);
+        if (!collections.isEmpty()) {
+            context = collections.get(0).getLoggerContextVO();
+        }
+
+        int msgProcessed = nbs[0];
+        int msgSkipped = nbs[1];
+        if (context != null && msgSkipped > 0) {
+            collections.add(new SkippedEvent(msgSkipped, context));
+        }
+        log(collections);
+        collections.clear();
+    }
+}
