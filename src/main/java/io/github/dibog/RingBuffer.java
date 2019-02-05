@@ -18,13 +18,11 @@ package io.github.dibog;
 
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 class RingBuffer<E> {
     public final Lock lock = new ReentrantLock();
-    private final Condition empty = lock.newCondition();
     private final AtomicInteger skipped = new AtomicInteger(0);
     private final int[] result = new int[2];
 
@@ -64,8 +62,6 @@ class RingBuffer<E> {
                 size = cap;
             }
 
-            empty.signalAll();
-
             boolean overwritten = prev!=null;
             if(overwritten) {
                 skipped.incrementAndGet();
@@ -94,14 +90,9 @@ class RingBuffer<E> {
      *
      * @return (nbOfMessageCollected, nbOfSkippedMessages)
      */
-    public int[] drainTo(Collection<E> aCollection) throws InterruptedException {
+    public int[] drainTo(Collection<E> aCollection) {
         lock.lock();
         try {
-
-            while(size<=0) {
-                empty.await();
-            }
-
             final int base = head-size;
             for(int i=0; i<size; ++i) {
                 int index = base+i;
