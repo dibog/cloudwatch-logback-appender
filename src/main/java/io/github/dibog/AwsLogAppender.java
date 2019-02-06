@@ -29,7 +29,7 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
     boolean createLogGroup = true;
     String streamName;
     String dateFormat;
-    int queueLength = 500;
+    int queueLength = 10;
     Layout<ILoggingEvent> layout;
 
     public void setAwsConfig(AwsConfig config) {
@@ -79,7 +79,7 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
 
     @Override
     public void start() {
-        dump = new AwsCWEventDump(this );
+        dump = new AwsCWEventDump(this, queueLength );
 
         Thread t = new Thread(dump);
         t.setDaemon(true);

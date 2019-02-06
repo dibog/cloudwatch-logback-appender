@@ -73,6 +73,10 @@ class RingBuffer<E> {
         }
     }
 
+    public int getSize() {
+        return size;
+    }
+
     private int inc(int current) {
         assert 0<=current;
 
