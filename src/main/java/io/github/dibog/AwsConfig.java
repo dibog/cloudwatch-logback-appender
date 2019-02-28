@@ -44,7 +44,7 @@ public class AwsConfig {
         }
 
         if(clientConfig!=null) {
-            builder.withClientConfiguration(new ClientConfiguration());
+            builder.withClientConfiguration(clientConfig);
         }
 
         if(credentials!=null) {
