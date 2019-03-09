@@ -99,7 +99,25 @@ one created.
 ( See https://logback.qos.ch/manual/layouts.html#PatternLayout. ) 
 If the tag is missing, the logging event will be transformed into a json object.
 
+## Tips and Tricks
 
+### [](#unique-log-stream-names) Unique log stream names
+
+To make the log stream name unqiue across the same application and multiple ec2 instances, 
+we can use the variable substitution mechanism of logback:
+ 
+    <appender name="cloud-watch" class="io.github.dibog.AwsLogAppender">
+
+        <!-- just referencing the important settings -->
+        <streamName>stream-name-${instance.id}</streamName>
+        
+    </appender>
+
+And set the variable (in our case) `instance.id` via either `-D` from the command line, or via calling 
+`System.setProperty("instance.id", uniqueId)` as one of the first methods in your main. 
+
+Setting via `-D` is the recommended way.
+    
 ## Caveats
 
 The [pom.xml](pom.xml) used for this project binds to a specific version of the AWS SDK.
