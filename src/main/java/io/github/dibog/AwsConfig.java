@@ -18,22 +18,30 @@ package io.github.dibog;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.logs.AWSLogs;
 import com.amazonaws.services.logs.AWSLogsClientBuilder;
 
 public class AwsConfig {
     private ClientConfiguration clientConfig;
     private AwsCredentials credentials;
+    private String profileName;
     private String region;
 
     public void setCredentials(AwsCredentials credentials) {
         this.credentials = credentials;
     }
+
     public void setClientConfig(ClientConfiguration clientConfig) {
         this.clientConfig = clientConfig;
     }
+
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public void setProfileName(String profileName) {
+        this.profileName = profileName;
     }
 
     public AWSLogs createAWSLogs() {
@@ -47,7 +55,10 @@ public class AwsConfig {
             builder.withClientConfiguration(clientConfig);
         }
 
-        if(credentials!=null) {
+        if(profileName!=null) {
+            builder.withCredentials(new ProfileCredentialsProvider(profileName));
+        }
+        else if(credentials!=null) {
             builder.withCredentials(new AWSStaticCredentialsProvider(credentials));
         }
 

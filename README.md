@@ -28,6 +28,8 @@ With the following XML fragment you can configure your Cloudtwatch logback appen
                 <accessKeyId></accessKeyId>
                 <secretAccessKey></secretAccessKey>
             </credentials>
+            
+            <profileName>awsProfile</profileName>
 
             <region></region>
 
@@ -61,8 +63,12 @@ set the environment variables required to provide the AWS credentials.
 But if that section is available in the configuration it will be used instead of the data
 from the environment.
 
-The sub section ``<credentials>`` is self explanatory if you know your AWS. Just determine your values for this 
+To authenticate you can have currently three mechanism:
+* Use the tag ``<profileName>`` to specify the name of profile.
+* The use of tag ``<credentials>`` is self explanatory if you know your AWS. Just determine your values for this 
 section and enter them here.
+* Don't specify anything and you should get the IAM settings of your EC2 instance.
+
 
 The sub section ``<region>`` should contain the AWS region into which the log information
 should be streamed, please find here the [actual list of regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#available_regions).
