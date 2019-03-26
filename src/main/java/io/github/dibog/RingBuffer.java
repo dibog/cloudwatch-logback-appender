@@ -33,8 +33,11 @@ class RingBuffer<E> {
     private int head = 0;
     private int size = 0;
 
-    public RingBuffer(int aCapacity) {
-        if(aCapacity<=0) throw new IllegalArgumentException("Capacity must be positive");
+    @SuppressWarnings("unchecked")
+    public RingBuffer(final int aCapacity) {
+        if(aCapacity<=0) {
+            throw new IllegalArgumentException("Capacity must be positive");
+        }
         cap = aCapacity;
         buffer = (E[])new Object[aCapacity];
     }
@@ -47,11 +50,11 @@ class RingBuffer<E> {
      * @return false if the item could be inserted without removing an old one
      *
      */
-    public boolean put(E aElement) {
+    public boolean put(final E aElement) {
         lock.lock();
 
         try {
-            E prev = buffer[head];
+            final E prev = buffer[head];
             buffer[head] = aElement;
 
             head++;
@@ -66,7 +69,7 @@ class RingBuffer<E> {
 
             empty.signalAll();
 
-            boolean overwritten = prev!=null;
+            final boolean overwritten = prev!=null;
             if(overwritten) {
                 skipped.incrementAndGet();
             }
@@ -77,7 +80,7 @@ class RingBuffer<E> {
         }
     }
 
-    private int inc(int current) {
+    private int inc(final int current) {
         assert 0<=current;
 
         int next = current+1;
@@ -94,7 +97,7 @@ class RingBuffer<E> {
      *
      * @return (nbOfMessageCollected, nbOfSkippedMessages)
      */
-    public int[] drainTo(Collection<E> aCollection) throws InterruptedException {
+    public int[] drainTo(final Collection<E> aCollection) throws InterruptedException {
         lock.lock();
         try {
 
@@ -113,7 +116,7 @@ class RingBuffer<E> {
                     index -= cap;
                 }
 
-                E elem = buffer[index];
+                final E elem = buffer[index];
                 assert elem!=null;
 
                 buffer[index]=null;

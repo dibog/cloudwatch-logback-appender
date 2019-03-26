@@ -16,50 +16,43 @@
 
 package io.github.dibog;
 
-import com.amazonaws.ClientConfiguration;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.services.logs.AWSLogs;
-import com.amazonaws.services.logs.AWSLogsClientBuilder;
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClient;
+import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClientBuilder;
 
 public class AwsConfig {
-    private ClientConfiguration clientConfig;
+
     private AwsCredentials credentials;
     private String profileName;
     private String region;
 
-    public void setCredentials(AwsCredentials credentials) {
+    public void setCredentials(final AwsCredentials credentials) {
         this.credentials = credentials;
     }
 
-    public void setClientConfig(ClientConfiguration clientConfig) {
-        this.clientConfig = clientConfig;
-    }
-
-    public void setRegion(String region) {
+    public void setRegion(final String region) {
         this.region = region;
     }
 
-    public void setProfileName(String profileName) {
+    public void setProfileName(final String profileName) {
         this.profileName = profileName;
     }
 
-    public AWSLogs createAWSLogs() {
-        AWSLogsClientBuilder builder = AWSLogsClientBuilder.standard();
+    public CloudWatchLogsClient createAwsLogs() {
 
-        if(region!=null) {
-            builder.withRegion(region);
+        final CloudWatchLogsClientBuilder builder = CloudWatchLogsClient.builder();
+
+        if(region != null) {
+            builder.region(Region.of(region));
         }
 
-        if(clientConfig!=null) {
-            builder.withClientConfiguration(clientConfig);
+        if(profileName != null) {
+            builder.credentialsProvider(ProfileCredentialsProvider.builder().profileName(profileName).build());
         }
-
-        if(profileName!=null) {
-            builder.withCredentials(new ProfileCredentialsProvider(profileName));
-        }
-        else if(credentials!=null) {
-            builder.withCredentials(new AWSStaticCredentialsProvider(credentials));
+        else if(credentials != null) {
+            builder.credentialsProvider(StaticCredentialsProvider.create(credentials));
         }
 
         return builder.build();

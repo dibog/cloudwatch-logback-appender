@@ -28,7 +28,7 @@ class SkippedEvent implements ILoggingEvent {
     private final int no;
     private final LoggerContextVO loggerContextVO;
 
-    public SkippedEvent(int aMessages, LoggerContextVO aLoggerContextV0) {
+    public SkippedEvent(final int aMessages, final LoggerContextVO aLoggerContextV0) {
         no = aMessages;
         loggerContextVO = aLoggerContextV0;
     }
@@ -93,6 +93,7 @@ class SkippedEvent implements ILoggingEvent {
         return null;
     }
 
+    @Deprecated
     @Override
     public Map<String, String> getMdc() {
         return null;
