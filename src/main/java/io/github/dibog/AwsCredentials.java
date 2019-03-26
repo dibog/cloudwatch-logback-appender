@@ -16,32 +16,35 @@
 
 package io.github.dibog;
 
-import com.amazonaws.auth.AWSCredentials;
+public class AwsCredentials implements software.amazon.awssdk.auth.credentials.AwsCredentials {
 
-public class AwsCredentials implements AWSCredentials{
     private String accessKeyId;
     private String secretAccessKey;
+
+    @Override
+    public String accessKeyId() {
+        return accessKeyId;
+    }
+
+    @Override
+    public String secretAccessKey() {
+        return secretAccessKey;
+    }
 
     public String getAccessKeyId() {
         return accessKeyId;
     }
 
-    public void setAccessKeyId(String accessKeyId) {
+    public void setAccessKeyId(final String accessKeyId) {
         this.accessKeyId = accessKeyId;
     }
 
-    public void setSecretAccessKey(String secretAccessKey) {
+    public String getSecretAccessKey() {
+        return secretAccessKey;
+    }
+
+    public void setSecretAccessKey(final String secretAccessKey) {
         this.secretAccessKey = secretAccessKey;
     }
 
-    @Override
-    public String getAWSAccessKeyId() {
-        return accessKeyId;
-    }
-
-    @Override
-    public String getAWSSecretKey() {
-        return secretAccessKey;
-    }
 }
-
