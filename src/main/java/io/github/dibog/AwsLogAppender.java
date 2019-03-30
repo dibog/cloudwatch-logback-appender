@@ -91,8 +91,10 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
     @Override
     public void stop() {
         super.stop();
-        // flush it
-        dump.shutdown();
+        if(dump!=null) {
+            // flush it
+            dump.shutdown();
+        }
         dump = null;
     }
 }

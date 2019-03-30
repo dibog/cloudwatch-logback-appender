@@ -45,7 +45,7 @@ class SkippedEvent implements ILoggingEvent {
 
     @Override
     public String getMessage() {
-        return "Skipped "+no+" messages in the last log cycle.";
+        return "Skipped "+no+" messages in the last log cycle. (See <queueLength> in https://github.com/dibog/cloudwatch-logback-appender/)";
     }
 
     @Override
