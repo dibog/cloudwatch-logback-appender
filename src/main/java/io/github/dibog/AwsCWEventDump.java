@@ -30,7 +30,7 @@ import java.util.*;
 import static java.util.Objects.requireNonNull;
 
 class AwsCWEventDump implements Runnable {
-    private final RingBuffer<ILoggingEvent> queue = new RingBuffer<ILoggingEvent>(10);
+    private final RingBuffer<ILoggingEvent> queue;
     private final LoggingEventToString layout;
     private final AwsConfig awsConfig;
     private final boolean createLogGroup;
@@ -50,6 +50,7 @@ class AwsCWEventDump implements Runnable {
     public AwsCWEventDump( AwsLogAppender aAppender ) {
         logContext = requireNonNull(aAppender, "appender");
         awsConfig = aAppender.awsConfig==null ? new AwsConfig(): aAppender.awsConfig;
+        queue = new RingBuffer<ILoggingEvent>(aAppender.queueLength);
         createLogGroup = aAppender.createLogGroup;
         groupName = requireNonNull(aAppender.groupName, "appender.groupName");
         logEventReq = new PutLogEventsRequest().withLogGroupName(groupName);
