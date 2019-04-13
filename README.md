@@ -15,7 +15,7 @@ This project provides a [logback appender](https://logback.qos.ch/) whichs targe
     <dependency>
         <groupId>io.github.dibog</groupId>
         <artifactId>cloudwatch-logback-appender</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.6</version>
     </dependency>
 
 ## Configuration
