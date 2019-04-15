@@ -36,7 +36,7 @@ import java.util.*;
 import static java.util.Objects.requireNonNull;
 
 class AwsCWEventDump implements Runnable {
-    private final RingBuffer<ILoggingEvent> queue = new RingBuffer<ILoggingEvent>(10);
+    private final RingBuffer<ILoggingEvent> queue;
     private final LoggingEventToString layout;
     private final AwsConfig awsConfig;
     private final boolean createLogGroup;
@@ -75,6 +75,8 @@ class AwsCWEventDump implements Runnable {
         else {
             dateFormat = new SimpleDateFormat(aAppender.dateFormat);
         }
+
+         queue = new RingBuffer<ILoggingEvent>(aAppender.queueLength);
     }
 
     private void closeStream() {

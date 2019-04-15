@@ -34,7 +34,7 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
 
     public void setAwsConfig(AwsConfig config) {
         this.awsConfig = config;
-        addInfo("AwsConfig was set to "+config);
+        addInfo("awsConfig = "+config);
     }
 
     public void setLayout(Layout<ILoggingEvent> layout) {
@@ -42,27 +42,27 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
     }
 
     public void setGroupName(String groupName) {
-        addInfo("groupName was set to "+groupName);
+        addInfo("groupName = "+groupName);
         this.groupName = groupName;
     }
 
     public void setStreamName(String streamName) {
-        addInfo("streamName was set to "+streamName);
+        addInfo("streamName = "+streamName);
         this.streamName = streamName;
     }
 
     public void setDateFormat(String dateFormat) {
-        addInfo("dateFormat was set to "+dateFormat);
+        addInfo("dateFormat = "+dateFormat);
         this.dateFormat = dateFormat;
     }
     
     public void setQueueLength(int aLength) {
-        addInfo("queueLength was set to "+aLength);
+        addInfo("queueLength = "+aLength);
         queueLength = aLength;
     }
 
     public void setCreateLogGroup(boolean createLogGroup) {
-        addInfo("createLogGroup was set to "+createLogGroup);
+        addInfo("createLogGroup = "+createLogGroup);
         this.createLogGroup = createLogGroup;
     }
 
@@ -70,9 +70,9 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
     protected void append(ILoggingEvent event) {
 
         AwsCWEventDump queue = dump;
-        if (dump != null) {
+        if (queue != null) {
             event.prepareForDeferredProcessing();
-            dump.queue(event);
+            queue.queue(event);
         }
 
     }

@@ -3,7 +3,19 @@
     <appender name="cwl1" class="io.github.dibog.AwsLogAppender">
 
         <awsConfig>
-            <profileName>mosaic</profileName>
+            <region>eu-central-1</region>
+            <profileName>foo</profileName>
+
+
+
+            <httpClient>
+
+                <localAddress>1.2.3.4.5</localAddress>
+                <proxyConfig>
+                    <endpoint>http://proxy:1234</endpoint>
+                    <nonProxies>localhost,127.0.0.1</nonProxies>
+                </proxyConfig>
+            </httpClient>
             <!--<credentials>-->
                 <!--<accessKeyId></accessKeyId>-->
                 <!--<secretAccessKey></secretAccessKey>-->
@@ -11,16 +23,12 @@
 
             <!--<region>eu-central-1</region>-->
 
-            <!--<clientConfig class="com.amazonaws.ClientConfiguration">-->
-                <!--<proxyHost>foo</proxyHost>-->
-                <!--<proxyPort>123</proxyPort>-->
-            <!--</clientConfig>-->
         </awsConfig>
 
 
         <!--<createLogGroup>true</createLogGroup>-->
         <queueLength>100</queueLength>
-        <groupName>foo</groupName>
+        <groupName>log-test</groupName>
         <streamName>log-complex</streamName>
         <dateFormat>yyyyMMdd_HHmm</dateFormat>
 
@@ -29,7 +37,17 @@
     <appender name="cwl2" class="io.github.dibog.AwsLogAppender">
 
         <awsConfig>
-            <profileName>mosaic</profileName>
+            <profileName>foo</profileName>
+
+            <httpClient>
+                <proxyConfig>
+                    <endpoint>http://proxy:1234</endpoint>
+                    <nonProxies>localhost,127.0.0.1</nonProxies>
+                </proxyConfig>
+                <localAddress>123</localAddress>
+            </httpClient>
+
+
             <!--<credentials>-->
             <!--<accessKeyId></accessKeyId>-->
             <!--<secretAccessKey></secretAccessKey>-->
@@ -37,16 +55,12 @@
 
             <!--<region>eu-central-1</region>-->
 
-            <!--<clientConfig class="com.amazonaws.ClientConfiguration">-->
-            <!--<proxyHost>foo</proxyHost>-->
-            <!--<proxyPort>123</proxyPort>-->
-            <!--</clientConfig>-->
         </awsConfig>
 
 
         <!--<createLogGroup>true</createLogGroup>-->
         <queueLength>100</queueLength>
-        <groupName>foo</groupName>
+        <groupName>log-test</groupName>
         <streamName>log-simple</streamName>
         <dateFormat>yyyyMMdd_HHmm</dateFormat>
 

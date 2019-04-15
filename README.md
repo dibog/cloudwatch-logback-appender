@@ -8,14 +8,15 @@ This project is licensed under the [Apache License Version 2.0](https://www.apac
 The copyright owner is Dieter Bogdoll.
 
 ## Overview
-This project provides a [logback appender](https://logback.qos.ch/) whichs target is [AWS Cloudwatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html).
+This project provides a [logback appender](https://logback.qos.ch/) whichs target is [AWS Cloudwatch Logs](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)
+and is using the AWS V2 API. 
 
 ## Maven
 
     <dependency>
         <groupId>io.github.dibog</groupId>
         <artifactId>cloudwatch-logback-appender</artifactId>
-        <version>1.0.3</version>
+        <version>2.0.0</version>
     </dependency>
 
 ## Configuration
@@ -24,19 +25,38 @@ With the following XML fragment you can configure your Cloudtwatch logback appen
     <appender name="cloud-watch" class="io.github.dibog.AwsLogAppender">
 
         <awsConfig>
+
+            <region>eu-central-1</region>
+
+            <profileName>awsProfile</profileName>
+
             <credentials>
                 <accessKeyId></accessKeyId>
                 <secretAccessKey></secretAccessKey>
             </credentials>
-            
-            <profileName>awsProfile</profileName>
 
-            <region></region>
+            <httpClient> 
+                <connectionAcquisitionTimeout>LONG</conconnectionAcquisitionTimeout>
+                <connectionMaxIdleTime>LONG</connectionMaxIdleTime>
+                <connectionTimeout>LONG</connectionTimeout>
+                <connectionTimeToLive>LONG</connectionTimeToLive>
+                <expectContinueEnabled>BOOLEAN</expectContinueEnabled>
+                <localAddress>STRING</localAddress>
+                <maxConnections>LONG</maxConnections>
+                <socketTimeout>LONG</socketTimeout>
+                <useIdleConnectionReaper>BOOLEAN</useIdleConnectionReaper>
+                <proxyConfig>
+                    <endpoint>STRING</endpoint>
+                    <nonProxies>STRING</nonProxies>
+                    <ntlmDomain>STRING</ntlmDomain>
+                    <ntlmWorkstation>STRING</ntlmWorkstation>
+                    <username>STRING</username>
+                    <password>STRING</password>
+                    <preemptiveBasicAuthenticationEnabled>BOOLEAN</preemptiveBasicAuthenticationEnabled>
+                    <useSystemPropertyValues>BOOLEAN</useSystemPropertyValues>
+                </proxyConfig>
+            </httpClient>            
 
-            <clientConfig class="com.amazonaws.ClientConfiguration">
-                <proxyHost></proxyHost>
-                <proxyPort></proxyPort>
-            </clientConfig>
         </awsConfig>
 
         <createLogGroup>false</createLogGroup>
@@ -56,28 +76,21 @@ at least the following AWS permissions:
 * ``logs:DescribeLogStreams``
 * ``logs:PutLogEvents``
 
-The section ``<awsConfig>`` is optional and on an EC2 instance. It usually is not required as long
+The section ``<awsConfig>`` is optional on an EC2 instance. It usually is not required as long
 as you have attached an IAM profile to your instance with the right permissions and/or have
 set the environment variables required to provide the AWS credentials.
 
 But if that section is available in the configuration it will be used instead of the data
 from the environment.
 
-To authenticate you can have currently three mechanism:
-* Use the tag ``<profileName>`` to specify the name of profile.
-* The use of tag ``<credentials>`` is self explanatory if you know your AWS. Just determine your values for this 
-section and enter them here.
-* Don't specify anything and you should get the IAM settings of your EC2 instance.
+Please look here for more details to the properties: 
+* [CloudWatchLogsClientBuilder](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/cloudwatchlogs/CloudWatchLogsClientBuilder.html)
+* [AwsCredentials](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/auth/credentials/AwsCredentials.html)
+* [ApacheHttpClient.Builder](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/http/apache/ApacheHttpClient.Builder.html)
+* [ProxyConfiguration.Builder](https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/http/apache/ProxyConfiguration.Builder.html)
 
 
-The sub section ``<region>`` should contain the AWS region into which the log information
-should be streamed, please find here the [actual list of regions](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html#available_regions).
-You have to use the format you can find in the left column, e.g. like ``eu-central-1``.
-
-The ``<clientConfig>`` is again used mainly when your logging process is not run on an EC2 instance,
-but somewhere outside of AWS. Please lookup the [ClientConfiguration](https://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/ClientConfiguration.html) within the AWS documentation.
-
-And here now the remaining configuration elements:
+In the following a re the configuration elements of the `cloudwatch-logback-appender`:
 
 * ``<createLogGroup>``: Valid arguments: ``true`` or ``false``, where ``true`` requires the IAM User to have 
 the permissions ``logs:CreateLogGroup`` and ``logs:DescribeLogGroups``. Setting ``true`` allows the logger appender
@@ -109,7 +122,7 @@ If the tag is missing, the logging event will be transformed into a json object.
 
 ## Tips and Tricks
 
-### [](#unique-log-stream-names) Unique log stream names
+### Unique log stream names
 
 To make the log stream name unqiue across the same application and multiple ec2 instances, 
 we can use the variable substitution mechanism of logback:
@@ -125,6 +138,21 @@ And set the variable (in our case) `instance.id` via either `-D` from the comman
 `System.setProperty("instance.id", uniqueId)` as one of the first methods in your main. 
 
 Setting via `-D` is the recommended way.
+    
+### Remove the dependency to apache-client
+
+If you don't need the `<httpClient>` tag in your logback settings you could even exclude the dependency to
+the ApacheHttpClient in your pom.xml:
+    
+     <dependency>
+            <groupId>io.github.dibog</groupId>
+            <artifactId>cloudwatch-logback-appender</artifactId>
+            <version>VERSION_OF_CLOUDWATCH_LOGBACK_APPENDER</version>
+            <exclusion>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>apache-client</artifactId>
+            </exclusion>
+    </dependency>    
     
 ## Caveats
 
@@ -153,3 +181,5 @@ replace the dependecy to cloudwatch-logback-appender like this:
             </exclusion>
         </exclusions>
     </dependency>
+
+n>
