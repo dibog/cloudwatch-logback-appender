@@ -90,6 +90,7 @@ class AwsCWEventDump implements Runnable {
             catch(Exception e) {
                 logContext.addError("Exception while opening AWSLogs. Shutting down the cloud watch logger.", e);
                 shutdown();
+                return;
             }
         }
 
