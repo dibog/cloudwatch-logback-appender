@@ -1,22 +1,38 @@
+/*
+ * Copyright 2018  Dieter Bogdoll
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package io.github.dibog;
 
-import ch.qos.logback.core.spi.ContextAwareBase;
 import software.amazon.awssdk.http.apache.ProxyConfiguration;
 
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 
-public class AwsProxyConfig extends ContextAwareBase {
+public class AwsProxyConfig {
     private ProxyConfiguration.Builder builder = ProxyConfiguration.builder();
+    private StringHelper toString = new StringHelper("ProxyConfiguration");
 
     public void setEndpoint(String aEndpoint) {
-        addInfo("endpoint = "+aEndpoint);
+        toString.add("endpoint", aEndpoint);
         builder.endpoint(URI.create(aEndpoint));
     }
 
     public void setNonProxies(String aNonProxies) {
-        addInfo("nonProxies = "+aNonProxies);
+        toString.add("nonProxies", aNonProxies);
         String[] nonProxies = aNonProxies.split("[,;|]");
         for(int i=0, size=nonProxies.length;i<size; ++i) {
             String nonProxy = nonProxies[i];
@@ -29,33 +45,37 @@ public class AwsProxyConfig extends ContextAwareBase {
     }
 
     public void setNtlmDomain(String aProxyDomain) {
-        addInfo("ntlmDomain = "+aProxyDomain);
+        toString.add("htlmDomain", aProxyDomain);
         builder.ntlmDomain(aProxyDomain);
     }
 
     public void setNtlmWorkstation(String aProxyWorkstation) {
-        addInfo("ntlmWorkstation = "+aProxyWorkstation);
+        toString.add("htlmWorkstation", aProxyWorkstation);
         builder.ntlmWorkstation(aProxyWorkstation);
     }
 
     public void setPassword(String aPassword) {
-        addInfo("password = *********");
+        toString.add("password","*********");
         builder.password(aPassword);
     }
 
     public void setPreemptiveBasicAuthenticationEnabled(boolean aPreemptiveBasicAuthenticationEnabled) {
-        addInfo("preemptiveBasicAuthenticationEnabled = "+aPreemptiveBasicAuthenticationEnabled);
+        toString.add("preemptiveBasicAuthenticationEnabled", aPreemptiveBasicAuthenticationEnabled);
         builder.preemptiveBasicAuthenticationEnabled(aPreemptiveBasicAuthenticationEnabled);
     }
 
     public void setUsername(String aUsername) {
-        addInfo("username = "+aUsername);
+        toString.add("username", aUsername);
         builder.username(aUsername);
     }
 
     public void setUseSystemPropertyValues(boolean aUseSystemPropertyValues) {
-        addInfo("useSystemPropertyValues = "+aUseSystemPropertyValues);
+        toString.add("useSystemPropertyValues", aUseSystemPropertyValues);
         builder.useSystemPropertyValues(aUseSystemPropertyValues);
+    }
+
+    public String toString() {
+        return toString.toString();
     }
 
     public ProxyConfiguration build() {

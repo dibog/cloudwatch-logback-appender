@@ -10,7 +10,7 @@
 
             <httpClient>
 
-                <localAddress>1.2.3.4.5</localAddress>
+<!--                <localAddress>1.2.3.4.5</localAddress>-->
                 <proxyConfig>
                     <endpoint>http://proxy:1234</endpoint>
                     <nonProxies>localhost,127.0.0.1</nonProxies>

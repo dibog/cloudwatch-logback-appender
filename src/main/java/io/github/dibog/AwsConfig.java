@@ -26,23 +26,30 @@ import software.amazon.awssdk.services.cloudwatchlogs.CloudWatchLogsClientBuilde
 public class AwsConfig extends ContextAwareBase {
 
     private final CloudWatchLogsClientBuilder builder = CloudWatchLogsClient.builder();
+    private final StringHelper toString = new StringHelper(this);
 
     public void setRegion(final String region) {
-        addInfo("region = "+region);
+        toString.add("region", region);
         builder.region(Region.of(region));
     }
 
     public void setProfileName(final String profileName) {
-        addInfo("profileName = "+profileName);
+        toString.add("profileName", profileName);
         builder.credentialsProvider(ProfileCredentialsProvider.builder().profileName(profileName).build());
     }
 
     public void setCredentials(final AwsCredentials credentials) {
+        toString.add("credentials", credentials.toString());
         builder.credentialsProvider(StaticCredentialsProvider.create(credentials));
     }
 
     public void setHttpClient(final AwsApacheHttpClient httpClient) {
+        toString.add("httpClient", httpClient.toString());
         builder.httpClientBuilder(httpClient.builder());
+    }
+
+    public String toString() {
+        return toString.toString();
     }
 
     public CloudWatchLogsClient createAwsLogs() {

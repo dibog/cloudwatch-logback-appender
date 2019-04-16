@@ -49,7 +49,7 @@ class ExceptionUtil {
         }
     }
 
-    private  static void appendStackTrace(StringBuilder sb, String prefix, IThrowableProxy aProxy) {
+    private static void appendStackTrace(StringBuilder sb, String prefix, IThrowableProxy aProxy) {
 
         StackTraceElementProxy[] frames = aProxy.getStackTraceElementProxyArray();
         int commonFrames = aProxy.getCommonFrames();
