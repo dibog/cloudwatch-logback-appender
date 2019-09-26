@@ -46,6 +46,7 @@ class AwsCWEventDump implements Runnable {
     private AWSLogs awsLogs;
     private String currentStreamName = null;
     private String nextToken = null;
+    private Thread thread;
 
     public AwsCWEventDump( AwsLogAppender aAppender ) {
         logContext = requireNonNull(aAppender, "appender");
@@ -198,6 +199,9 @@ class AwsCWEventDump implements Runnable {
 
     public void shutdown() {
         done = true;
+        if (thread != null) {
+            thread.interrupt();
+        }
     }
 
     public void queue(ILoggingEvent event) {
@@ -205,6 +209,7 @@ class AwsCWEventDump implements Runnable {
     }
 
     public void run() {
+        thread = Thread.currentThread();
         List<ILoggingEvent> collections = new LinkedList<ILoggingEvent>();
         LoggerContextVO context = null;
         while(!done) {
