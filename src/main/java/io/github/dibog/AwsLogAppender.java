@@ -67,19 +67,19 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
     }
 
     @Override
-    protected void append(ILoggingEvent event) {
+    protected synchronized void append(ILoggingEvent event) {
 
-        AwsCWEventDump queue = dump;
-        if (dump != null) {
-            event.prepareForDeferredProcessing();
-            dump.queue(event);
-        }
-
+        event.prepareForDeferredProcessing();
+        dump.queue(event);
     }
 
     @Override
-    public void start() {
-        dump = new AwsCWEventDump(this );
+    public synchronized void start() {
+        if (isStarted()) {
+            return;
+        }
+        
+        dump = new AwsCWEventDump(this);
 
         Thread t = new Thread(dump);
         t.setDaemon(true);
@@ -89,12 +89,13 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
     }
 
     @Override
-    public void stop() {
-        super.stop();
-        if(dump!=null) {
-            // flush it
-            dump.shutdown();
+    public synchronized void stop() {
+        if (!isStarted()) {
+            return;
         }
+        
+        super.stop();
+        dump.shutdown();
         dump = null;
     }
 }
