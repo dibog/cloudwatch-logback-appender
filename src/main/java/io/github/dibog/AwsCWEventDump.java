@@ -159,7 +159,7 @@ class AwsCWEventDump implements Runnable {
         return null;
     }
 
-    private void log(Collection<ILoggingEvent> aEvents) {
+    private void log(List<ILoggingEvent> logbackEvents) {
         if(dateFormat!=null) {
             dateHolder.setTime(System.currentTimeMillis());
             String newStreamName = streamName + "-" + dateFormat.format(dateHolder);
@@ -174,9 +174,17 @@ class AwsCWEventDump implements Runnable {
             closeStream();
             openStream(streamName);
         }
+        
+        // Need to sort events by timestamp prior to sending to CloudWatch
+        Collections.sort (logbackEvents, new Comparator<ILoggingEvent>() {
+            @Override
+            public int compare(ILoggingEvent a, ILoggingEvent b) {
+                return Long.compare (a.getTimeStamp(), b.getTimeStamp());
+            }
+        });
 
-        Collection<InputLogEvent> events =  new ArrayList<>(aEvents.size());
-        for(ILoggingEvent event : aEvents) {
+        Collection<InputLogEvent> events =  new ArrayList<>(logbackEvents.size());
+        for(ILoggingEvent event : logbackEvents) {
             if(event.getLoggerContextVO()!=null) {
                 events.add(new InputLogEvent()
                         .withTimestamp(event.getTimeStamp())
@@ -205,23 +213,23 @@ class AwsCWEventDump implements Runnable {
     }
 
     public void run() {
-        List<ILoggingEvent> collections = new LinkedList<ILoggingEvent>();
+        List<ILoggingEvent> logbackEvents = new LinkedList<>();
         LoggerContextVO context = null;
         while(!done) {
 
             try {
-                int[] nbs = queue.drainTo(collections);
-                if(context==null && !collections.isEmpty()) {
-                    context = collections.get(0).getLoggerContextVO();
+                int[] nbs = queue.drainTo(logbackEvents);
+                if(context==null && !logbackEvents.isEmpty()) {
+                    context = logbackEvents.get(0).getLoggerContextVO();
                 }
 
                 int msgProcessed = nbs[0];
                 int msgSkipped = nbs[1];
                 if(context!=null && msgSkipped>0) {
-                    collections.add(new SkippedEvent(msgSkipped, context));
+                    logbackEvents.add(new SkippedEvent(msgSkipped, context));
                 }
-                log(collections);
-                collections.clear();
+                log(logbackEvents);
+                logbackEvents.clear();
             }
             catch(InterruptedException e) {
                 // ignoring
