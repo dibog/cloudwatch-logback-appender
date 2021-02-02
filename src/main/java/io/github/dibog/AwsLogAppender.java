@@ -27,6 +27,7 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
     AwsConfig awsConfig;
     String groupName;
     boolean createLogGroup = true;
+    int logGroupRetentionDays = 7;
     String streamName;
     String dateFormat;
     int queueLength = 500;
@@ -44,6 +45,11 @@ public class AwsLogAppender extends AppenderBase<ILoggingEvent> {
     public void setGroupName(String groupName) {
         addInfo("groupName was set to "+groupName);
         this.groupName = groupName;
+    }
+    
+    public void setLogGroupRetentionDays(int logGroupRetentionDays) {
+    	addInfo("logGroupRetentionDays was set to "+logGroupRetentionDays);
+    	this.logGroupRetentionDays = logGroupRetentionDays;
     }
 
     public void setStreamName(String streamName) {

@@ -35,6 +35,7 @@ class AwsCWEventDump implements Runnable {
     private final AwsConfig awsConfig;
     private final boolean createLogGroup;
     private final String groupName;
+    private final int retentionInDays;
     private final String streamName;
     private final DateFormat dateFormat;
     private final ContextAware logContext;
@@ -53,6 +54,7 @@ class AwsCWEventDump implements Runnable {
         queue = new RingBuffer<ILoggingEvent>(aAppender.queueLength);
         createLogGroup = aAppender.createLogGroup;
         groupName = requireNonNull(aAppender.groupName, "appender.groupName");
+        retentionInDays = aAppender.logGroupRetentionDays;
         logEventReq = new PutLogEventsRequest().withLogGroupName(groupName);
         streamName = requireNonNull(aAppender.streamName, "appender.streamName");
 
@@ -98,6 +100,7 @@ class AwsCWEventDump implements Runnable {
                 logContext.addInfo("creating log group '"+groupName+"'");
                 try {
                     awsLogs.createLogGroup(new CreateLogGroupRequest(groupName));
+                    awsLogs.putRetentionPolicy(new PutRetentionPolicyRequest(groupName, retentionInDays));
                 }
                 catch(OperationAbortedException e) {
                     logContext.addError("couldn't create log group '"+groupName+"': "+e.getLocalizedMessage());
