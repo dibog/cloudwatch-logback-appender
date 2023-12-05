@@ -51,7 +51,7 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <aws.version>1.11.292</aws.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.13</logback.version>
     </properties>
 
     <dependencyManagement>
